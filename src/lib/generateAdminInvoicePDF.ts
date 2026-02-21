@@ -47,7 +47,36 @@ interface AdminInvoice {
 const fmt = (n: number | undefined | null): string =>
   parseFloat(String(n ?? 0)).toFixed(2);
 
-export const generateAdminInvoicePDF = (invoice: AdminInvoice) => {
+// Function is now async to allow fetching product details
+export const generateAdminInvoicePDF = async (invoice: AdminInvoice) => {
+  
+  // ── Fetch Product Names before generating PDF ──
+  const itemsWithNames = await Promise.all(
+    invoice.items.map(async (item) => {
+      let fetchedName = item.productName;
+
+      // If product is just an ID string and we don't have the name yet, fetch it
+      if (typeof item.product === 'string' && !fetchedName) {
+        try {
+          const res = await fetch(`https://api.sarvasolutionvision.com/api/v1/user/products/${item.product}`);
+          const data = await res.json();
+          if (data.success && data.data?.product?.productName) {
+            fetchedName = data.data.product.productName;
+          }
+        } catch (error) {
+          console.error("Failed to fetch product name for ID:", item.product, error);
+        }
+      }
+
+      return {
+        ...item,
+        productName: fetchedName
+      };
+    })
+  );
+
+
+  // ── Original PDF Generation Logic ──
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm' });
   const pw = doc.internal.pageSize.getWidth();
   const m = 10;
@@ -121,7 +150,8 @@ export const generateAdminInvoicePDF = (invoice: AdminInvoice) => {
   // ── Items Table ──
   const tableStartY = pY + pH2 + 2;
 
-  const tableBody = invoice.items.map((item, i) => {
+  // Use itemsWithNames here instead of invoice.items
+  const tableBody = itemsWithNames.map((item, i) => {
     const qty = item.quantity ?? 0;
     const rate = item.productDP ?? item.price ?? 0;
     const mrp = item.productMRP ?? rate;
