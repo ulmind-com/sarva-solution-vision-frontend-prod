@@ -17,25 +17,25 @@ interface FileUploadState {
 
 const KYCDetailsTab = () => {
   const { user, isLoading, isProfileLoading, submitKYC, clearError } = useAuthStore();
-  
+
   // Form state
   const [aadhaarNumber, setAadhaarNumber] = useState('');
   const [panNumber, setPanNumber] = useState('');
-  
+
   // File states
   const [aadhaarFront, setAadhaarFront] = useState<FileUploadState>({ file: null, preview: null });
   const [aadhaarBack, setAadhaarBack] = useState<FileUploadState>({ file: null, preview: null });
   const [panImage, setPanImage] = useState<FileUploadState>({ file: null, preview: null });
-  
+
   // Refs for file inputs
   const aadhaarFrontRef = useRef<HTMLInputElement>(null);
   const aadhaarBackRef = useRef<HTMLInputElement>(null);
   const panImageRef = useRef<HTMLInputElement>(null);
-  
+
   // Get KYC status
   const kycStatus = user?.kyc?.status || 'none';
   const isLocked = kycStatus === 'pending' || kycStatus === 'approved';
-  
+
   // Populate form with existing data when user data loads
   useEffect(() => {
     if (user) {
@@ -51,7 +51,7 @@ const KYCDetailsTab = () => {
       }
     }
   }, [user]);
-  
+
   const handleFileSelect = (
     e: React.ChangeEvent<HTMLInputElement>,
     setter: React.Dispatch<React.SetStateAction<FileUploadState>>
@@ -63,61 +63,61 @@ const KYCDetailsTab = () => {
         toast.error('File size must be less than 2MB');
         return;
       }
-      
+
       // Validate file type
       if (!file.type.startsWith('image/')) {
         toast.error('Please select a valid image file');
         return;
       }
-      
+
       setter({
         file,
         preview: URL.createObjectURL(file),
       });
     }
   };
-  
+
   const clearFile = (setter: React.Dispatch<React.SetStateAction<FileUploadState>>) => {
     setter({ file: null, preview: null });
   };
-  
+
   const handleSubmit = async () => {
     // Validation
     if (!aadhaarNumber.trim()) {
       toast.error('Please enter Aadhaar Number');
       return;
     }
-    
+
     if (!/^\d{12}$/.test(aadhaarNumber.replace(/\s/g, ''))) {
       toast.error('Aadhaar Number must be 12 digits');
       return;
     }
-    
+
     if (!panNumber.trim()) {
       toast.error('Please enter PAN Number');
       return;
     }
-    
+
     if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panNumber.toUpperCase())) {
       toast.error('Invalid PAN Number format');
       return;
     }
-    
+
     if (!aadhaarFront.file) {
       toast.error('Please upload Aadhaar Front image');
       return;
     }
-    
+
     if (!aadhaarBack.file) {
       toast.error('Please upload Aadhaar Back image');
       return;
     }
-    
+
     if (!panImage.file) {
       toast.error('Please upload PAN Card image');
       return;
     }
-    
+
     const formData = new FormData();
     formData.append('aadhaarNumber', aadhaarNumber.replace(/\s/g, ''));
     formData.append('panCardNumber', panNumber.toUpperCase());
@@ -125,7 +125,7 @@ const KYCDetailsTab = () => {
     formData.append('aadhaarBack', aadhaarBack.file);
     formData.append('panImage', panImage.file);
     formData.append('bankDetails', '{}');
-    
+
     try {
       await submitKYC(formData);
       toast.success('KYC Submitted Successfully! Verification Pending.');
@@ -144,7 +144,7 @@ const KYCDetailsTab = () => {
       clearError();
     }
   };
-  
+
   // Status Banner Component
   const renderStatusBanner = () => {
     if (kycStatus === 'pending') {
@@ -158,7 +158,7 @@ const KYCDetailsTab = () => {
         </Alert>
       );
     }
-    
+
     if (kycStatus === 'approved') {
       return (
         <Alert className="border-green-500/50 bg-green-500/10">
@@ -170,7 +170,7 @@ const KYCDetailsTab = () => {
         </Alert>
       );
     }
-    
+
     if (kycStatus === 'rejected') {
       return (
         <Alert className="border-destructive/50 bg-destructive/10">
@@ -182,10 +182,10 @@ const KYCDetailsTab = () => {
         </Alert>
       );
     }
-    
+
     return null;
   };
-  
+
   // File Upload Component
   const FileUploadZone = ({
     label,
@@ -205,7 +205,7 @@ const KYCDetailsTab = () => {
     disabled: boolean;
   }) => {
     const hasPreview = fileState.preview || existingUrl;
-    
+
     return (
       <div className="space-y-2">
         <Label>{label}</Label>
@@ -285,7 +285,7 @@ const KYCDetailsTab = () => {
     <div className="space-y-6">
       {/* Status Banner */}
       {renderStatusBanner()}
-      
+
       {/* KYC Status Badge */}
       <div className="flex items-center gap-2">
         <span className="text-sm text-muted-foreground">Current Status:</span>
@@ -294,10 +294,10 @@ const KYCDetailsTab = () => {
             kycStatus === 'approved'
               ? 'default'
               : kycStatus === 'pending'
-              ? 'secondary'
-              : kycStatus === 'rejected'
-              ? 'destructive'
-              : 'outline'
+                ? 'secondary'
+                : kycStatus === 'rejected'
+                  ? 'destructive'
+                  : 'outline'
           }
           className={cn(
             kycStatus === 'approved' && 'bg-green-600 hover:bg-green-600',
@@ -307,7 +307,7 @@ const KYCDetailsTab = () => {
           {kycStatus === 'none' ? 'Not Submitted' : kycStatus.charAt(0).toUpperCase() + kycStatus.slice(1)}
         </Badge>
       </div>
-      
+
       {/* Form Fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -366,11 +366,11 @@ const KYCDetailsTab = () => {
           </div>
         </div>
       </div>
-      
+
       {/* File Uploads */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FileUploadZone
-          label="Aadhaar Card (Front)"
+          label="Bank PassBook 1st Page"
           fileState={aadhaarFront}
           onFileSelect={(e) => handleFileSelect(e, setAadhaarFront)}
           onClear={() => clearFile(setAadhaarFront)}
@@ -388,7 +388,7 @@ const KYCDetailsTab = () => {
           disabled={isLocked}
         />
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FileUploadZone
           label="PAN Card"
@@ -400,7 +400,7 @@ const KYCDetailsTab = () => {
           disabled={isLocked}
         />
       </div>
-      
+
       {/* Submit Button */}
       {!isLocked && (
         <div className="pt-4">

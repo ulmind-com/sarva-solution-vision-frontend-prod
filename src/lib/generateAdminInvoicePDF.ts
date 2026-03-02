@@ -49,7 +49,7 @@ const fmt = (n: number | undefined | null): string =>
 
 // Function is now async to allow fetching product details
 export const generateAdminInvoicePDF = async (invoice: AdminInvoice) => {
-  
+
   // ── Fetch Product Names before generating PDF ──
   const itemsWithNames = await Promise.all(
     invoice.items.map(async (item) => {

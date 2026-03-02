@@ -156,7 +156,7 @@ const UserDetail = () => {
 
   const fetchUserDetail = useCallback(async () => {
     if (!memberId) return;
-    
+
     try {
       setIsLoading(true);
       setError(null);
@@ -173,7 +173,7 @@ const UserDetail = () => {
 
   const handleKYCVerify = async () => {
     if (!memberId) return;
-    
+
     try {
       setIsKYCActionLoading(true);
       await api.patch(`/api/v1/admin/kyc/verify/${memberId}`, {
@@ -192,7 +192,7 @@ const UserDetail = () => {
 
   const handleKYCReject = async (reason: string) => {
     if (!memberId) return;
-    
+
     try {
       setIsKYCActionLoading(true);
       await api.patch(`/api/v1/admin/kyc/verify/${memberId}`, {
@@ -291,10 +291,10 @@ const UserDetail = () => {
               <div>
                 <h1 className="text-2xl font-bold text-foreground">{user.fullName}</h1>
                 <p className="text-muted-foreground font-mono">{user.memberId}</p>
-                <Badge 
-                  variant="outline" 
-                  className={user.status === 'active' 
-                    ? 'bg-primary/20 text-primary border-primary/30 mt-1' 
+                <Badge
+                  variant="outline"
+                  className={user.status === 'active'
+                    ? 'bg-primary/20 text-primary border-primary/30 mt-1'
                     : 'bg-destructive/20 text-destructive border-destructive/30 mt-1'
                   }
                 >
@@ -582,16 +582,16 @@ const UserDetail = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4 bg-muted/50 rounded-lg border">
             <div>
               <p className="text-sm text-muted-foreground">KYC Status</p>
-              <Badge 
+              <Badge
                 variant="outline"
                 className={
                   user.kyc?.status === 'approved' || user.kyc?.status === 'verified'
                     ? 'bg-primary/20 text-primary border-primary/30 mt-1'
                     : user.kyc?.status === 'pending'
-                    ? 'bg-yellow-500/20 text-yellow-600 border-yellow-500/30 mt-1'
-                    : user.kyc?.status === 'rejected'
-                    ? 'bg-destructive/20 text-destructive border-destructive/30 mt-1'
-                    : 'bg-muted text-muted-foreground mt-1'
+                      ? 'bg-yellow-500/20 text-yellow-600 border-yellow-500/30 mt-1'
+                      : user.kyc?.status === 'rejected'
+                        ? 'bg-destructive/20 text-destructive border-destructive/30 mt-1'
+                        : 'bg-muted text-muted-foreground mt-1'
                 }
               >
                 {user.kyc?.status === 'verified' ? 'Approved' : user.kyc?.status ? user.kyc.status.charAt(0).toUpperCase() + user.kyc.status.slice(1) : 'Not Submitted'}
@@ -617,15 +617,15 @@ const UserDetail = () => {
               {user.kyc?.aadhaarFront?.url && (
                 <Card>
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm">Aadhaar Front</CardTitle>
+                    <CardTitle className="text-sm">Bank PassBook 1st Page</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <Dialog>
                       <DialogTrigger asChild>
                         <div className="relative group cursor-pointer">
-                          <img 
-                            src={user.kyc.aadhaarFront.url} 
-                            alt="Aadhaar Front" 
+                          <img
+                            src={user.kyc.aadhaarFront.url}
+                            alt="Bank PassBook 1st Page"
                             className="w-full h-32 object-cover rounded-md"
                           />
                           <div className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-md flex items-center justify-center">
@@ -634,9 +634,9 @@ const UserDetail = () => {
                         </div>
                       </DialogTrigger>
                       <DialogContent className="max-w-3xl">
-                        <img 
-                          src={user.kyc.aadhaarFront.url} 
-                          alt="Aadhaar Front" 
+                        <img
+                          src={user.kyc.aadhaarFront.url}
+                          alt="Bank PassBook 1st Page"
                           className="w-full h-auto"
                         />
                       </DialogContent>
@@ -654,9 +654,9 @@ const UserDetail = () => {
                     <Dialog>
                       <DialogTrigger asChild>
                         <div className="relative group cursor-pointer">
-                          <img 
-                            src={user.kyc.aadhaarBack.url} 
-                            alt="Aadhaar Back" 
+                          <img
+                            src={user.kyc.aadhaarBack.url}
+                            alt="Aadhaar Back"
                             className="w-full h-32 object-cover rounded-md"
                           />
                           <div className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-md flex items-center justify-center">
@@ -665,9 +665,9 @@ const UserDetail = () => {
                         </div>
                       </DialogTrigger>
                       <DialogContent className="max-w-3xl">
-                        <img 
-                          src={user.kyc.aadhaarBack.url} 
-                          alt="Aadhaar Back" 
+                        <img
+                          src={user.kyc.aadhaarBack.url}
+                          alt="Aadhaar Back"
                           className="w-full h-auto"
                         />
                       </DialogContent>
@@ -685,9 +685,9 @@ const UserDetail = () => {
                     <Dialog>
                       <DialogTrigger asChild>
                         <div className="relative group cursor-pointer">
-                          <img 
-                            src={user.kyc.panImage.url} 
-                            alt="PAN Card" 
+                          <img
+                            src={user.kyc.panImage.url}
+                            alt="PAN Card"
                             className="w-full h-32 object-cover rounded-md"
                           />
                           <div className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-md flex items-center justify-center">
@@ -696,9 +696,9 @@ const UserDetail = () => {
                         </div>
                       </DialogTrigger>
                       <DialogContent className="max-w-3xl">
-                        <img 
-                          src={user.kyc.panImage.url} 
-                          alt="PAN Card" 
+                        <img
+                          src={user.kyc.panImage.url}
+                          alt="PAN Card"
                           className="w-full h-auto"
                         />
                       </DialogContent>
