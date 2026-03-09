@@ -36,6 +36,7 @@ import ProductCatalog from "./pages/user/ProductCatalog";
 import AdminLayout from "./components/layout/AdminLayout";
 import AdminHome from "./pages/admin/AdminHome";
 import UserManagement from "./pages/admin/UserManagement";
+import UserWalletList from "./pages/admin/UserWalletList";
 import UserDetail from "./pages/admin/UserDetail";
 import PayoutRequests from "./pages/admin/PayoutRequests";
 
@@ -64,16 +65,16 @@ const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children, requireAdmin = false }: { children: React.ReactNode; requireAdmin?: boolean }) => {
   const { user, token } = useAuthStore();
-  
+
   if (!user || !token) {
     return <Navigate to="/login" replace />;
   }
-  
+
   // Admin check - redirect non-admin users to dashboard profile
   if (requireAdmin && user.role !== 'admin') {
     return <Navigate to="/dashboard/profile" replace />;
   }
-  
+
   return <>{children}</>;
 };
 
@@ -88,7 +89,7 @@ const AppRoutes = () => {
       <Route path="/franchise/login" element={<FranchiseLogin />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password/:token" element={<ResetPassword />} />
-      
+
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={
         <ProtectedRoute>
@@ -188,7 +189,7 @@ const AppRoutes = () => {
           </DashboardLayout>
         </ProtectedRoute>
       } />
-      
+
       {/* Admin Routes */}
       <Route path="/admin" element={
         <ProtectedRoute requireAdmin>
@@ -201,6 +202,13 @@ const AppRoutes = () => {
         <ProtectedRoute requireAdmin>
           <AdminLayout>
             <UserManagement />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/user-wallets" element={
+        <ProtectedRoute requireAdmin>
+          <AdminLayout>
+            <UserWalletList />
           </AdminLayout>
         </ProtectedRoute>
       } />
@@ -225,7 +233,7 @@ const AppRoutes = () => {
           </AdminLayout>
         </ProtectedRoute>
       } />
-      
+
       {/* Admin - Product Management */}
       <Route path="/admin/products/add" element={
         <ProtectedRoute requireAdmin>
@@ -241,7 +249,7 @@ const AppRoutes = () => {
           </AdminLayout>
         </ProtectedRoute>
       } />
-      
+
       {/* Admin - Stock Management */}
       <Route path="/admin/stock/dashboard" element={
         <ProtectedRoute requireAdmin>
@@ -250,7 +258,7 @@ const AppRoutes = () => {
           </AdminLayout>
         </ProtectedRoute>
       } />
-      
+
       {/* Admin - Franchise Management */}
       <Route path="/admin/franchise/add" element={
         <ProtectedRoute requireAdmin>
@@ -287,14 +295,14 @@ const AppRoutes = () => {
           </AdminLayout>
         </ProtectedRoute>
       } />
-      
+
       {/* Franchise Portal Routes */}
       <Route path="/franchise/dashboard" element={<FranchiseDashboard />} />
       <Route path="/franchise/inventory" element={<FranchiseInventory />} />
       <Route path="/franchise/sale/create" element={<FranchiseCreateBill />} />
       <Route path="/franchise/request-stock" element={<FranchiseRequestStock />} />
       <Route path="/franchise/order-history" element={<FranchiseOrderHistory />} />
-      
+
       {/* 404 */}
       <Route path="*" element={<NotFound />} />
     </Routes>
