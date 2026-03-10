@@ -30,6 +30,7 @@ import IncomeReport from "./pages/dashboard/IncomeReport";
 import FastTrackBonus from "./pages/dashboard/FastTrackBonus";
 import StarMatchingBonus from "./pages/dashboard/StarMatchingBonus";
 import WelcomeLetter from "./pages/dashboard/WelcomeLetter";
+import PurchaseHistory from "./pages/dashboard/PurchaseHistory";
 import ProductCatalog from "./pages/user/ProductCatalog";
 
 // Admin
@@ -186,6 +187,13 @@ const AppRoutes = () => {
         <ProtectedRoute>
           <DashboardLayout>
             <WelcomeLetter />
+          </DashboardLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/dashboard/purchase-history" element={
+        <ProtectedRoute>
+          <DashboardLayout>
+            <PurchaseHistory />
           </DashboardLayout>
         </ProtectedRoute>
       } />

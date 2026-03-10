@@ -43,6 +43,22 @@ export interface ProductDetailsResponse {
   };
 }
 
+// Fetch repurchase bonus history
+export const getRepurchaseHistory = async (page = 1, limit = 10) => {
+  const response = await api.get('/api/v1/user/bonus/repurchase-history', {
+    params: { page, limit }
+  });
+  return response.data;
+};
+
+// Fetch user's purchase history
+export const getMyPurchases = async (page = 1, limit = 20) => {
+  const response = await api.get('/api/v1/user/purchases', {
+    params: { page, limit }
+  });
+  return response.data;
+};
+
 // Fetch all products with pagination
 export const getAllProducts = async (page = 1, limit = 12): Promise<ProductsResponse> => {
   const response = await api.get('/api/v1/user/products', {
