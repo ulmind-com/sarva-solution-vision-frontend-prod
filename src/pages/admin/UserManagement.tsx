@@ -23,9 +23,11 @@ interface AdminUser {
   memberId: string;
   email: string;
   phone: string;
-  rank: string;
+  currentRank: string;
   status: 'active' | 'inactive';
-  joiningDate: string;
+  createdAt: string;
+  isFirstPurchaseDone?: boolean;
+  activationDate?: string;
 }
 
 interface UsersResponse {
@@ -66,7 +68,7 @@ const UserManagement = () => {
 
   const formatDate = (dateString: string) => {
     try {
-      return format(new Date(dateString), 'dd-MM-yyyy');
+      return format(new Date(dateString), 'dd-MM-yyyy, hh:mm a');
     } catch {
       return dateString;
     }
@@ -129,6 +131,7 @@ const UserManagement = () => {
                   <TableHead className="text-muted-foreground">Rank</TableHead>
                   <TableHead className="text-muted-foreground">Status</TableHead>
                   <TableHead className="text-muted-foreground">Joining Date</TableHead>
+                  <TableHead className="text-muted-foreground">Activation Date</TableHead>
                   <TableHead className="text-muted-foreground">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -144,12 +147,13 @@ const UserManagement = () => {
                       <TableCell><Skeleton className="h-6 w-16" /></TableCell>
                       <TableCell><Skeleton className="h-6 w-16" /></TableCell>
                       <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                       <TableCell><Skeleton className="h-8 w-8" /></TableCell>
                     </TableRow>
                   ))
                 ) : filteredUsers.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                    <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
                       {searchQuery ? 'No users found matching your search' : 'No users found'}
                     </TableCell>
                   </TableRow>
@@ -170,7 +174,7 @@ const UserManagement = () => {
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className="text-xs">
-                          {user.rank}
+                          {user.currentRank || 'Associate'}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -185,7 +189,12 @@ const UserManagement = () => {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {formatDate(user.joiningDate)}
+                        {user.createdAt ? formatDate(user.createdAt) : 'N/A'}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {user.activationDate
+                          ? formatDate(user.activationDate)
+                          : 'N/A'}
                       </TableCell>
                       <TableCell>
                         <Button
