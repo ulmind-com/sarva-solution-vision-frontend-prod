@@ -41,6 +41,7 @@ import UserWalletList from "./pages/admin/UserWalletList";
 import WalletLogs from "./pages/admin/WalletLogs";
 import UserDetail from "./pages/admin/UserDetail";
 import PayoutRequests from "./pages/admin/PayoutRequests";
+import WalletAdjustment from "./pages/admin/WalletAdjustment";
 
 // Admin - Products
 import AddProduct from "./pages/admin/products/AddProduct";
@@ -225,6 +226,13 @@ const AppRoutes = () => {
         <ProtectedRoute requireAdmin>
           <AdminLayout>
             <WalletLogs />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/wallet-adjustments" element={
+        <ProtectedRoute requireAdmin>
+          <AdminLayout>
+            <WalletAdjustment />
           </AdminLayout>
         </ProtectedRoute>
       } />

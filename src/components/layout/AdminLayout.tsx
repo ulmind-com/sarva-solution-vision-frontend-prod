@@ -66,6 +66,7 @@ const simpleMenuItems: MenuItem[] = [
   { path: '/admin/users', label: 'User Management', icon: Users },
   { path: '/admin/user-wallets', label: 'User Wallets', icon: Wallet },
   { path: '/admin/wallet-logs', label: 'Wallet Logs', icon: Clock },
+  { path: '/admin/wallet-adjustments', label: 'Wallet Adjustments', icon: Wallet },
   { path: '/admin/payouts', label: 'Payout Requests', icon: CreditCard },
   { path: '/admin/profile', label: 'My Profile', icon: UserCog },
 ];
